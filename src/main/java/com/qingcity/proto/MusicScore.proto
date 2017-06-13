@@ -1,0 +1,82 @@
+option java_package = "com.qingcity.proto";
+option java_outer_classname = "CityMessage";
+
+//用于排行榜分数显示
+message Score{
+   required int32 userId=1;
+   required int32 score=2;
+}
+//用于游戏结束的奖励
+message Reward {
+   optional int32 gold=1;
+   optional int32 diamond=2;
+   optional int32 experience=3;
+}
+//可用于所有排行信息查询(根据协议号进行区分)
+message C2S_Rank{
+   required int32 userId=1;
+   required int32 city=2;
+}
+
+message S2C_Rank{
+  required int32 userId=1;
+  required string nickname=2;
+  required int32 level=3;
+  required int32 rank=4;
+  required string avator=5;
+  repeated Score score=6;
+}
+
+message C2S_PlainScore{
+  required int32 userId=1;
+  required int32 difficulty=2;
+  required int32 city=3;
+}
+
+message MusicScore{
+   required int32 musicId=1;
+   optional int32 score=2;
+}
+
+message S2C_PlainScore{
+   repeated MusicScore musicScore=1;
+}
+
+//可用于闯关和打歌(根据协议号进行区分)
+message C2S_Play{
+   required int32 userId=1;
+   required int32 musicId=2;
+   required int32 difficulty=3;
+}
+
+message S2C_Play{
+  optional string context=1;
+}
+
+message C2S_PassInfo{
+    required int32 userId=1;
+	required int32 city=2;
+	required int32 difficulty=3;
+}
+
+message S2C_PassInfo{
+   repeated PassInfo passInfo=1;
+}
+
+message PassInfo{
+   required int32 musicId=1;
+   optional bool status=2;//是否通关
+}
+
+message C2S_PlayResult{
+   required int32 userId=1;
+   required int32 musicId=2;
+   required int32 difficulty=3;
+   required int32 grade=4;//闯关是为闯关星星数，打歌则为歌曲成绩
+   optional Reward reward=5;
+}
+
+message S2C_PlayResult{
+  optional string context=1;
+}
+

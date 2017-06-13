@@ -1,0 +1,32 @@
+option java_package = "com.qingcity.proto";
+option java_outer_classname = "UserMessage";
+
+message C2S_Login{
+  required string phone=1;
+  required string password=2;
+}
+
+message C2S_Register{
+  required string phone=1;
+  required string password=2;
+}
+
+message S2C_Login{
+  optional bool result = 1;
+}
+
+message S2C_Register{
+  optional bool result = 1;
+}
+
+message C2S_ActiveAccount{
+  required int32 userId = 1;
+  required string code = 2;
+}
+
+message S2C_ActiveAccount{
+  optional bool result = 1;
+}
+
+
+

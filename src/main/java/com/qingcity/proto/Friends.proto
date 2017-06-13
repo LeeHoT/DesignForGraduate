@@ -1,0 +1,59 @@
+option java_package="com.qingcity.proto";
+option java_outer_classname="Friends";
+
+message C2S_AddRequest{
+  required int32 userId = 1;
+  required int32 friendId=2;
+}
+message S2C_Result{
+  optional string context=1;
+}
+
+message C2S_ConfirmFriend{
+ required int32 id=1;
+ required bool isFriend=2;
+}
+
+message C2S_SearchByName{
+  required string nickname=1;
+}
+message C2S_SearchById{
+ required int32 userId=1;
+}
+message S2C_SearchResult{
+ required Friend friend=1;
+}
+message C2S_FriendsList{
+  required int32 userId=1;
+}
+
+message S2C_FriendsList{
+ repeated Friend friend=1;
+}
+
+message C2S_RecommendFriends{
+   optional int32 userId=1;
+}
+
+message S2C_RecommendFriends{
+ repeated Friend friend=1;
+}
+
+message C2S_LookRequest{
+  required int32 userId=1;
+}
+
+message S2C_LookRequest{
+ repeated Friend friend=1;
+}
+
+message Friend{
+ required int32 userId=1;
+ required string nickname=2;
+ required int32 level=3;
+ optional string avator=4;
+ optional int32 societyId=5;
+ optional string societyName=6;
+}
+
+

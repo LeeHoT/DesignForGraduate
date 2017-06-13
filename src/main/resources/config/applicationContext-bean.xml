@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="timer" class="java.util.Timer" scope="prototype"></bean>
+
+	<!--实体类 bean -->
+	<bean id="userEntity" class="com.qingcity.entity.UserEntity"></bean>
+
+	<bean id="msgEntity" class="com.qingcity.entity.MsgEntity"></bean>
+
+	<bean id="playerEntity" class="com.qingcity.entity.PlayerEntity"></bean>
+</beans>

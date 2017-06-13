@@ -1,0 +1,17 @@
+option java_package = "com.qingcity.proto";
+option java_outer_classname = "DressMessage";
+
+message C2S_ChangeDress{
+	required int32 userId=1;
+	optional int32 clothes=2;
+	optional int32 pains=3;
+	optional int32 shoes=4;
+}
+
+message C2S_GetDress{
+	required int32 userId;
+}
+
+message S2C_Dress{
+	optional string dress=1;
+}

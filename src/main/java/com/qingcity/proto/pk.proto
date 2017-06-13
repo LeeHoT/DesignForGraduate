@@ -1,0 +1,63 @@
+option java_package = "com.qingcity.proto";
+option java_outer_classname = "PkMessage";
+
+message C2S_PkRequest{
+   required int32 userId=1;//玩家id
+   required int32 musicId=2;//选择音乐id
+}
+
+message S2C_TargetInfo{
+   required int32 targetId=1;//玩家id
+   required string nickname=2;//玩家昵称
+   required int32 level=3; //玩家等级
+   required string society=4; //社团名
+   optional string avatar=5; //头像
+   required int32 clothes=6;//衣服
+   required int32 pants=7; //裤子
+   required int32 shoes=8; //鞋子
+   optional string identificatio=9;//身份
+   optional int32 targetScore=10;
+   optional int32 rank=11;//对手排名
+}
+
+message C2S_PkPrepared{
+   required int32 userId=1;//玩家id
+   optional string identification=2;//身份
+}
+
+message S2C_PkPrepared{
+   optional int32 type=1;//1准备好
+}
+
+message C2S_CancelPk{
+  required int32 userId=1;//取消匹配
+  required int32 musicId=2;//音乐id
+}
+
+message S2C_CancelPk{
+   optional bool isSucceed=1;//是否取消成功
+   optional string content=2;//成功或未成功消息内容
+}
+
+message C2S_PkResult{
+  required int32 userId=1;//自己id
+  optional int32 targetId=2;//对手id
+  optional string identification=3;//身份
+  optional int32 musicId=4;//音乐id
+  required int32 score=5;//自己的成绩
+}
+
+message S2C_PkResult{
+  optional int32 targetId=1;//对手id
+  required int32 score=2;//对手分数
+  optional bool result=3;//1胜利，0失败
+  optional int32 rank=4;//排名变化+多少或者-多少
+}
+
+message S2C_Error{
+ optional string content=1;//匹配出错，错误内容
+}
+
+
+
+
