@@ -14,7 +14,7 @@ import io.netty.channel.Channel;
 
 /**
  * @author leehotin
- * @Date 2017年2月5日 上午10:33:50
+ * @Date 2017年4月5日 上午10:33:50
  * @Description 角色通到管理器
  */
 public class PlayerChannelManager {
@@ -45,7 +45,7 @@ public class PlayerChannelManager {
 	 *            玩家Channel
 	 */
 	public synchronized void add(int userId, Channel channel) {
-		logger.info("Add channel:[{}] into channelMap,玩家[{}]已登录", userId, userId);
+		logger.info("==============>: Add channel:[{}] into channelMap,玩家[{}]已登录", userId, userId);
 		if(channelMap.containsKey(userId)){
 			//玩家已登录，踢掉之前的玩家并通知
 			S2C_Result.Builder s2c_result = S2C_Result.newBuilder();
@@ -95,10 +95,10 @@ public class PlayerChannelManager {
 	public void removeChannel(Channel channel) {
 		for (Map.Entry entry : channelMap.entrySet()) {
 			if (entry.getValue() == channel) {
-				logger.warn("Remove channel:[{}] from channelMap!,玩家[{}]掉线", channel, entry.getKey());
+				logger.info("==============>: Remove channel:[{}] from channelMap!,玩家[{}]掉线", channel, entry.getKey());
 				channelMap.remove(entry.getKey());
+				logger.info("==============>: 当前还有[{}]个玩家在线", channelMap.size());
 			}
-			logger.debug("当前共有[{}]个玩家在线", channelMap.size());
 		}
 	}
 }

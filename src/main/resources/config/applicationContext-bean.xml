@@ -11,4 +11,6 @@
 	<bean id="msgEntity" class="com.qingcity.entity.MsgEntity"></bean>
 
 	<bean id="playerEntity" class="com.qingcity.entity.PlayerEntity"></bean>
+	
+	<bean id="bill" class="com.qingcity.entity.Bill"></bean>
 </beans>

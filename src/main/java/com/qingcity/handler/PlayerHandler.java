@@ -17,6 +17,7 @@ import com.qingcity.proto.PlayerInfo.S2C_GetPlayerInfo;
 import com.qingcity.proto.PlayerInfo.S2C_Result;
 import com.qingcity.proto.PlayerInfo.Wealth;
 import com.qingcity.service.PlayerService;
+import com.qingcity.util.ExceptionUtils;
 import com.qingcity.util.StringUtil;
 import com.qingcity.util.TimeUtil;
 
@@ -45,18 +46,13 @@ public class PlayerHandler extends HandlerMsg implements CmdHandler {
 		case CmdConstant.C2S_USER_UPDATE_AVATOR:
 			handleUpdateAvator(msgEntity, response);
 			break;
-
 		default:
-			System.out.println("cmd [" + msgEntity.getCmdCode()
-					+ "]can't be found ");
 			break;
 		}
-
 	}
 
 	/**
 	 * 获取基本信息
-	 * 
 	 * @param msgEntity
 	 * @param response
 	 */
@@ -68,17 +64,15 @@ public class PlayerHandler extends HandlerMsg implements CmdHandler {
 				Player.Builder playerProto= parsePlayerInfo(player, response);
 				s2c_getPlayerInfo.setPlayer(playerProto);
 			}else{
-				logger.error("玩家"+msgEntity.getUserId()+"不存在");
+				logger.error("=============>: 玩家"+msgEntity.getUserId()+"不存在");
 				return;
 			}
 			handlerResMsg(s2c_getPlayerInfo.build(), CmdConstant.S2C_USER_GET_BASE_INFO, msgEntity.getUserId(),response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("=============>: "+ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
-	
-
 	/**
 	 * 更新个人签名
 	 * 
@@ -100,8 +94,8 @@ public class PlayerHandler extends HandlerMsg implements CmdHandler {
 			}
 			handlerResMsg(s2c_result.build(), CmdConstant.S2C_USER_UPDATE_AVATAR,msgEntity.getUserId(), response);
 		} catch (Exception e) {
-			logger.error("更新个人签名异常");
-			e.printStackTrace();
+			logger.error("=============>: 更新个人签名异常");
+			logger.error("=============>: "+ExceptionUtils.getStackTrace(e));
 		}
 	}
 
@@ -121,21 +115,16 @@ public class PlayerHandler extends HandlerMsg implements CmdHandler {
 			playerService.updateByUserIdSelective(player);
 			handlerResMsg(s2c_result.build(), CmdConstant.S2C_USER_UPDATE_AVATAR, msgEntity.getUserId(), response);
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("更新头像异常");
-			e.printStackTrace();
+			logger.error("=============>: 更新头像异常");
+			logger.error("=============>: "+ExceptionUtils.getStackTrace(e));
 		}
 	}
 
-	private Player.Builder parsePlayerInfo(PlayerEntity player,
-			GameResponse response) {
+	private Player.Builder parsePlayerInfo(PlayerEntity player,GameResponse response) {
 		Player.Builder player2 = Player.newBuilder();
 		Wealth.Builder wealth = Wealth.newBuilder();
 		wealth.setDiamond(player.getDiamond());
-		System.out.println("钻石"+player.getDiamond());
 		wealth.setGold(player.getGold());
-		System.out.println("金币"+player.getGold());
-		System.out.println("玩家等级"+player.getLevel());
-		System.out.println("玩家昵称"+player.getNickname());
 		player2.setNickname(player.getNickname())
 				.setLevel(player.getLevel())
 				.setExperience(player.getExperience())
@@ -144,10 +133,8 @@ public class PlayerHandler extends HandlerMsg implements CmdHandler {
 				.setAvatar(player.getIcon()==null?0:Integer.parseInt(player.getIcon()))
 				.setSocietyId(player.getSocietyId())
 				.setContribution(player.getContribution())
-				.setLastLoginTime(
-						TimeUtil.Timestamp2String((player.getLastLoginTime())))
+				.setLastLoginTime(TimeUtil.Timestamp2String((player.getLastLoginTime())))
 				.setWealth(wealth);
 		return player2;
 	}
-
 }

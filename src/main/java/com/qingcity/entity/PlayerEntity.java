@@ -8,10 +8,9 @@ import java.sql.Timestamp;
  * 
  * 对应player表，表中每个用户只能有一条数据
  * 
- * @author leehoting
+ * @author leehotin
  *
  */
-
 public class PlayerEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int userId; // userEntity 外键，也是主键

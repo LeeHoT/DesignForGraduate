@@ -21,7 +21,7 @@ import io.netty.channel.Channel;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月6日 下午5:33:14
+ * @Date 2017年4月6日 下午5:33:14
  * @Description 聊天消息拦截器，主要处理对世界消息和公会消息的分发
  */
 @Controller
@@ -36,7 +36,6 @@ public class ChatMessageDispatcher implements Runnable {
 	private Executor messageExecutor;
 	private boolean running;
 	private long sleepTime;
-	private volatile int msgNum = 0;// 消息队列中未处理消息数
 
 	public ChatMessageDispatcher() {
 		this.sessionMsgQ = new ConcurrentHashMap<Integer, ChatMsgQueue>();
@@ -81,17 +80,14 @@ public class ChatMessageDispatcher implements Runnable {
 				chatQueue = new ChatMsgQueue(new ConcurrentLinkedQueue<ChatMessageReq>());
 				this.sessionMsgQ.put(Integer.valueOf(request.getChatMessage().getTarget()), chatQueue);
 				chatQueue.add(request);// 添加请求消息进入队列
-				msgNum++;// 消息增加一条
-				logger.debug("添加消息进入消息队列，当前队列中有" + msgNum + "条消息!");
 			} else {
 				if (chatQueue.size() > MESSAGE_QUEUE_LIMIT) {
 					// 消息超过队列上限，，直接丢弃
 					return;
 				}
 				chatQueue.add(request);// 添加消息进入队列
-				msgNum++;
-				logger.debug("添加消息进入消息队列，当前队列中有" + msgNum + "条消息!");
 			}
+			logger.info("==============>: 添加消息进入"+request.getChannel().hashCode()+"消息队列，当前队列中有" + chatQueue.size() + "条消息!");
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
@@ -139,7 +135,7 @@ public class ChatMessageDispatcher implements Runnable {
 		public void run() {
 			try {
 				// 处理消息队列中的消息
-				msgNum--;
+				logger.info("==============>: 当前队列中还有[{}]条消息", this.chatQueue.size());
 				handMessageQueue();
 			} catch (Exception e) {
 				logger.error(ExceptionUtils.getStackTrace(e));
@@ -150,13 +146,16 @@ public class ChatMessageDispatcher implements Runnable {
 
 		private void handMessageQueue() {
 			try {
-				
+				Long start = System.currentTimeMillis();
 				if (ChatConstant.WORLD_MSG == request.getChatMessage().getTarget()) {
 					// 处理世界消息
+					logger.info("==============>: ************开始处理消息************");
 					worldMessageHandler.process(request);
 				} else {
-					logger.warn("目标频道[{}]找不到", request.getChatMessage().getTarget());
+					logger.error("=============>: 目标频道[{}]找不到", request.getChatMessage().getTarget());
 				}
+				logger.info("==============>: 处理协议[{}]共消耗：[{}]ms", request.getChatMessage().getTarget() ,(System.currentTimeMillis()-start));
+				logger.info("==============>: ************消息处理结束************");
 			} catch (Exception e) {
 				logger.error(ExceptionUtils.getStackTrace(e));
 			}

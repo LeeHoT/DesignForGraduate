@@ -6,7 +6,7 @@ import io.netty.channel.group.ChannelGroup;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月6日 下午5:32:03
+ * @Date 2017年4月6日 下午5:32:03
  * @Description Channel频道管理接口
  */
 public interface Groups {

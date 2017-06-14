@@ -39,7 +39,7 @@ public class NettyServerStart {
 	}
 
 	private static void run() throws Exception {
-		logger.info("load the spring config file");
+		logger.info("==============>: load the spring config file");
 		factory = new ClassPathXmlApplicationContext("classpath:config/applicationContext.xml");
 		ServerInitializer initializer = (ServerInitializer) factory.getBean(ServerInitializer.class);
 		// 设定Server 监听端口
@@ -47,7 +47,7 @@ public class NettyServerStart {
 		// 设定 initializer
 		server.setInitializer(initializer);
 		// 加载Pipeline 解码器 NettyMsgDecoder 编码器NettyMsgEncoder
-		logger.info("GameServer Starting...");
+		logger.info("==============>: GameServer Starting...");
 		server.run();
 	}
 }

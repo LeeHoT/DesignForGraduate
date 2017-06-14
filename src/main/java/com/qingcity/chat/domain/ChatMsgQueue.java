@@ -5,7 +5,7 @@ import java.util.Queue;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月6日 下午5:30:46
+ * @Date 2017年4月6日 下午5:30:46
  * @Description 聊天消息队列
  */
 public final class ChatMsgQueue {

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月9日 下午4:02:31
+ * @Date 2017年4月9日 下午4:02:31
  * @Description 订单实体类
  */
 public class Bill implements Serializable {
@@ -74,6 +74,12 @@ public class Bill implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		return "Bill [userId=" + userId + ",orderId=" + orderId +", pid=" + pid + ", time=" + time + ", status=" + status + ", pNumber="
+				+ pNumber + ", totalPrice=" + totalPrice + "]";
 	}
 
 }

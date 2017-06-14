@@ -6,7 +6,6 @@ import io.netty.util.Timer;
 import io.netty.util.TimerTask;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -17,12 +16,10 @@ import com.qingcity.redis.store.WaitingRoomStore;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月28日 下午4:54:26
+ * @Date 2017年4月28日 下午4:54:26
  * @Description Pk匹配房间Redis数据保存
  */
 public class RoomRedis {
-
-	private static final Map<String, String> map = new LinkedHashMap<>();
 
 	private static final RoomRedis instance = new RoomRedis();
 

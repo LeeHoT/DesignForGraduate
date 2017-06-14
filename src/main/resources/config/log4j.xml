@@ -5,7 +5,7 @@
 	<appender name="CONSOLE.ERR" class="org.apache.log4j.ConsoleAppender">
 		<param name="target" value="System.err" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d][%p, (%F:%L).%M] %m%n" />
+			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="warn" />
@@ -16,7 +16,7 @@
 	<appender name="CONSOLE.OUT" class="org.apache.log4j.ConsoleAppender">
 		<param name="target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d][%p, (%F:%L).%M] %m%n" />
+			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="debug" />
@@ -29,14 +29,14 @@
 		<param name="Threshold" value="INFO" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d][%p, (%F:%L).%M] %m%n" />
+			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
 	</appender>
 	<appender name="error.file" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="/home/qingcity/QingCity/logs/error.log" />
 		<param name="Threshold" value="WARN" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%d][%p, (%F:%L).%M] %m%n" />
+			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
 	</appender>
 	<logger name="org.springframework">
@@ -55,7 +55,7 @@
 		<level value="debug" />
 	</logger>
 	<root>
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="CONSOLE.ERR" />
 		<appender-ref ref="CONSOLE.OUT" />
 		<appender-ref ref="FILE" />

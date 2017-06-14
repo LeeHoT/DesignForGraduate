@@ -2,26 +2,17 @@ package com.qingcity.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.qingcity.constants.CmdConstant;
 import com.qingcity.domain.GameResponse;
 import com.qingcity.entity.MsgEntity;
-import com.qingcity.proto.ShopProto.C2S_Shop;
-import com.qingcity.proto.ShopProto.S2C_Shop;
-import com.qingcity.service.ShopService;
-import com.qingcity.util.StringUtil;
 
 @Controller
 public class ShopHandler extends HandlerMsg implements CmdHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ShopHandler.class);
 
-	@Autowired
-	private ShopService shopService;
-	
 	@Override
 	public void handleMsg(MsgEntity msgEntity, GameResponse response) throws Exception {
 		if (isErrorMsg(msgEntity, response)) {
@@ -30,7 +21,6 @@ public class ShopHandler extends HandlerMsg implements CmdHandler {
 		}
 		switch (msgEntity.getCmdCode()) {// 根据命令码对应找到对应处理方法
 		case CmdConstant.C2S_SHOP_BUY:
-			
 		    handleBuy(msgEntity, response);
 			break;
 		default:
@@ -40,8 +30,8 @@ public class ShopHandler extends HandlerMsg implements CmdHandler {
 	
 	public void handleBuy(MsgEntity msgEntity, GameResponse response){
 		
-		logger.info("=================检查货币是否充足后购买");
-		logger.info("=================购买商品");
+		logger.info("==============>: 检查货币是否充足后购买");
+		logger.info("==============>: 购买商品");
 		
 		
 		

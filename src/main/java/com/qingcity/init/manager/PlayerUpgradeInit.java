@@ -46,10 +46,9 @@ public class PlayerUpgradeInit {
 				for(int i = 0;i<playerUpgradePoList.size();i++){
 					upgradeMap.put(i, playerUpgradePoList.get(i));
 				}
-				logger.info("PlayerUpgrade.json文件加载成功");
+				logger.info("==============>: PlayerUpgrade.json文件加载成功");
 			} catch (Exception e) {
-				logger.error("PlayerUpgrade.jsonjson加载失败");
-				e.printStackTrace();
+				logger.error("=============>: PlayerUpgrade.jsonjson加载失败");
 			}
 	}
 

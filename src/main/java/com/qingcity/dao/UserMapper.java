@@ -5,6 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import com.qingcity.entity.UserEntity;
 
+/**
+ * 
+ * @author leehotin
+ * @Date 2017年4月14日 下午1:46:41
+ * @Description TODO
+ */
 @Repository
 public interface UserMapper {
 

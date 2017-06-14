@@ -46,10 +46,9 @@ public class MainTaskInit {
 				for(int i = 1;i<=mainTaskPoList.size();i++){
 					map.put(i, mainTaskPoList.get(i-1));
 				}
-				logger.info("MainTask.json文件加载成功");
+				logger.info("==============>: MainTask.json文件加载成功");
 			} catch (Exception e) {
-				logger.error("MainTask.jsonjson加载失败");
-				e.printStackTrace();
+				logger.error("=============>: MainTask.jsonjson加载失败");
 			}
 	}
 	

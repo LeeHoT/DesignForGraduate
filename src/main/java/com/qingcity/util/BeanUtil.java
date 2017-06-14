@@ -1,12 +1,21 @@
+
 package com.qingcity.util;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.ibatis.javassist.bytecode.annotation.BooleanMemberValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,27 +64,29 @@ public class BeanUtil {
 	 * @param o
 	 * @return
 	 */
-	public Map<Object, Object> getFidldMap(Object o) {
-		Map<Object, Object> map = new LinkedHashMap<>();
-		Field[] fields = o.getClass().getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			try {
-				String firstLetter = fields[i].getName().substring(0, 1).toUpperCase();
-				String getter = "get" + firstLetter + fields[i].getName().substring(1);
-				if (getter.equals("getSerialVersionUID")) {
-					continue;
-				}
-				if (getter.contains("Is")) {
-					getter = "is" + getter.substring(5, getter.length());
-				}
-				Method method = o.getClass().getMethod(getter, new Class[] {});
-				Object value = method.invoke(o, new Object[] {});
-				map.put(fields[i].getName(), value);
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-				return null;
-			}
-		}
+	public Map<String, Object> getFidldMap(Object o) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		BeanInfo beanInfo;
+		try {
+			beanInfo = Introspector.getBeanInfo(o.getClass());
+			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();  
+			for (PropertyDescriptor property : propertyDescriptors) {  
+				String key = property.getName();  
+				// 过滤class属性  
+				if (!key.equals("class")) {  
+					// 得到property对应的getter方法  
+					Method getter = property.getReadMethod();  
+					Object value = getter.invoke(o);
+					map.put(key, value);  
+				}  
+			}  
+		} catch (IntrospectionException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}   
 		return map;
 	}
 
@@ -92,36 +103,32 @@ public class BeanUtil {
 	}
 
 	public Object map2Object(Map<String, String> map, Object o) {
-
-		Field[] fields = o.getClass().getDeclaredFields();
 		try {
-			for (Field field : fields) {
-				String name = field.getName();
-				System.out.println("取值的时候的参数名为" + name);
-				String setter = "set" + name.toUpperCase().substring(0, 1) + name.substring(1);
-				System.out.println("setter方法" + setter);
-				if (setter.equals("setSerialVersionUID")) {
-					System.out.println("setSerialVersionUID()直接略过");
-					continue;
-				}
-				if (setter.contains("Is")) {
-					setter = "set" + setter.substring(5, setter.length());
-				}
-				Method method = o.getClass().getMethod(setter, new Class[] { field.getType() });
-				Type type = field.getType();
-				System.out.println("属性名为" + type.toString());
-				if (type.equals("java.lang.String")) {
-					method.invoke(o, map.get(field));
-				} else if (type.equals("java.util.Date")) {
-					method.invoke(o, TimeUtil.String2Date(map.get(field)));
-				} else if (type.equals("java.sql.Timestamp")) {
-					method.invoke(o, Timestamp.valueOf(map.get(field)));
-				} else if (type.equals("java.lang.Integer")) {
-					method.invoke(o, Integer.valueOf(map.get(field)));
-				} else if (type.equals("boolean")) {
-					method.invoke(o, Boolean.valueOf(map.get(field)));
-				}
-			}
+			BeanInfo beanInfo = Introspector.getBeanInfo(o.getClass());  
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();  
+            for (PropertyDescriptor property : propertyDescriptors) {  
+                String key = property.getName();
+                Type type= property.getPropertyType();
+                // 过滤class属性  
+                if (map.containsKey(key)) {
+                	String value = map.get(key);  
+                	// 得到property对应的setter方法  
+                	Method setter = property.getWriteMethod();  
+                	if(type.equals(Boolean.class)){
+                		setter.invoke(o, Boolean.parseBoolean(value));  
+                	}else if(type.equals(Integer.class)){
+                		setter.invoke(o, Integer.parseInt(value)); 
+                	}else if(type.equals(String.class)){
+                		setter.invoke(o, value); 
+                	}else if(type.equals(Timestamp.class)){
+                		setter.invoke(o, Timestamp.valueOf(value)); 
+                	}else if(type.equals(Short.class)){
+                		setter.invoke(o, Short.parseShort(value)); 
+                	}else if(type.equals(Long.class)){
+                		setter.invoke(o, Long.parseLong(value)); 
+                	}
+                }  
+            }  
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -80,24 +80,4 @@ public class GameRequest {
 	public Command getCommand() {
 		return this.command;
 	}
-
-//	public int readInt() {
-//		return this.command.readInt();
-//	}
-//
-//	public short readShort() {
-//		return this.command.readShort();
-//	}
-//
-//	public long readLong() {
-//		return this.command.readLong();
-//	}
-//
-//	public float readFloat() {
-//		return this.command.readFloat();
-//	}
-//
-//	public String readString() {
-//		return this.command.readString();
-//	}
 }

@@ -23,7 +23,6 @@ public class BadWordInit {
 
 	public static BadWordInit getInstance() {
 		if (instance == null) {
-			System.out.println("新建banwordInit对象");
 			instance = new BadWordInit();
 		}
 		return instance;
@@ -50,11 +49,10 @@ public class BadWordInit {
 			}.getType();
 			badWord = GsonUtil.getInstance().fromJson(json, type);
 			if(badWord!=null&&badWord.size()>0){
-				logger.info("badword.json加载成功");
+				logger.info("==============>: badword.json加载成功");
 			}
 		} catch (Exception e) {
-			logger.error("badword.json加载失败");
-			e.printStackTrace();
+			logger.error("=============>: badword.json加载失败");
 		}
 	}
 
@@ -75,10 +73,12 @@ public class BadWordInit {
 	}
 
 	public boolean containBadWord(String base) {
-		System.out.println("contain badword: "+badWord);
 		Iterator<BadWordPo> it = badWord.iterator();
+		BadWordPo bw = null;
 		while (it.hasNext()) {
-			if (base.contains(it.next().getValue())) {
+			bw = it.next();
+			if (base.contains(bw.getValue())) {
+				logger.info("包含非法字符[{}]",bw.getValue());
 				return true;
 			}
 		}

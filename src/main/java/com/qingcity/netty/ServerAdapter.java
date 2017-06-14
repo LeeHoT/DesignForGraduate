@@ -16,7 +16,6 @@ import com.qingcity.dispatcher.HandlerDispatcher;
 import com.qingcity.domain.ERequestType;
 import com.qingcity.domain.GameRequest;
 import com.qingcity.entity.MsgEntity;
-import com.qingcity.proto.KeepAlive.KeepAliveMsg;
 import com.qingcity.proto.PlayerInfo.S2C_Result;
 import com.qingcity.task.CheckChannelStatusTask;
 
@@ -51,12 +50,12 @@ public class ServerAdapter extends SimpleChannelInboundHandler<MsgEntity> {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.debug("[Client  OnLine]:" + ctx.channel().remoteAddress() + "上线");
+		logger.info("==============>: [Client OnLine]:" + ctx.channel().remoteAddress() + "上线");
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		logger.error("[Client OutLine]:" + ctx.channel().remoteAddress() + "掉线并将其移出服务器");
+		logger.info("==============>: [Client OutLine]:" + ctx.channel().remoteAddress() + "掉线并将其移出服务器");
 	}
 
 	@Override
@@ -76,15 +75,10 @@ public class ServerAdapter extends SimpleChannelInboundHandler<MsgEntity> {
 				message.setCmdCode(CmdConstant.S2C_USER_NOT_LOGIN);
 				message.setData(b);
 				ctx.writeAndFlush(message);
-				System.out.println("user not login");
 				return;
 			}
 		}
-		if (CmdConstant.PING == msg.getCmdCode()) {
-			System.out.println("accept ping message ");
-			// 客户端发来的PING消息，处理PING消息,并返回给客户端PONG。
-			repPing(ctx, msg);
-		} else if (ChatConstant.WORLD_MSG == msg.getCmdCode() || ChatConstant.SOCIETY_MSG == msg.getCmdCode()) {
+		if (ChatConstant.WORLD_MSG == msg.getCmdCode()) {
 			sendMessage(ctx, msg);
 		}else{
 			socketRequest(ctx, msg);
@@ -96,37 +90,8 @@ public class ServerAdapter extends SimpleChannelInboundHandler<MsgEntity> {
 		this.chatMessageDispatcher.addMessage(new ChatMessageReq(ctx, msg));
 	}
 
-	/**
-	 * 回应客户端心跳检测
-	 * 
-	 * @param ctx
-	 */
-	private static void repPing(ChannelHandlerContext ctx, MsgEntity msg) {
-		KeepAliveMsg.Builder keepAlive = KeepAliveMsg.newBuilder();
-		keepAlive.setContent("服务器收到ping");
-		MsgEntity repMsg = new MsgEntity();
-		byte[] pingB = keepAlive.build().toByteArray();
-		repMsg.setCmdCode(CmdConstant.REP_PING);
-		repMsg.setData(pingB);
-		repMsg.setMsgLength(pingB.length);
-		ctx.writeAndFlush(repMsg);
-	}
-	
-	/**
-	 * 发送ping消息
-	 * 
-	 * @param ctx
-	 * 
-	 * private static void sendPing(ChannelHandlerContext ctx) {
-	 *      KeepAliveMsg.Builder keepAlive = KeepAliveMsg.newBuilder();
-	 *      MsgEntity msg = new MsgEntity(); byte[] pingB =
-	 *      keepAlive.build().toByteArray();
-	 *      msg.setCmdCode(CmdConstant.PING); msg.setData(pingB);
-	 *      msg.setMsgLength(pingB.length); ctx.writeAndFlush(msg); }
-	 */
-
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		logger.error("[Client]: " + ctx.channel().remoteAddress() + "在" + new Date() + "发生连接异常");
+		logger.error("=============>: [Client]: " + ctx.channel().remoteAddress() + "在" + new Date() + "发生连接异常");
 		CheckChannelStatusTask ccst = new CheckChannelStatusTask();
 		ccst.kickOff(ctx.channel());
 		logger.error(cause.getMessage());

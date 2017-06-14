@@ -4,16 +4,21 @@ import redis.clients.jedis.*;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.qingcity.redis.common.Config;
 
 /**
  * 
  * @author leehotin
- * @Date 2017年2月27日 上午11:17:34
+ * @Date 2017年4月27日 上午11:17:34
  * @Description Redis管理类
  */
 public class RedisManager {
 
+	private static Logger logger = LoggerFactory.getLogger(RedisManager.class);
+	
 	private static JedisPool jedisPool;
 
 	static {
@@ -24,21 +29,13 @@ public class RedisManager {
 			config.setMaxWaitMillis(Config.REDIS_MAX_WAIT_MILLIS);
 			config.setMaxIdle(Config.REDIS_MAX_IDLE);
 			config.setTestOnBorrow(Config.REDIS_TEST_ON_BORROW);
-
-			// config.setMaxTotal(8);
-			// config.setMaxWaitMillis(100000);
-			// config.setMaxIdle(8);
-			// config.setTestOnBorrow(true);
+		    config.setMaxTotal(8);
+		    config.setMaxWaitMillis(100000);
+		    config.setMaxIdle(8);
+		    config.setTestOnBorrow(true);
 			// 创建连接池
-			System.out.println("创建Redis 连接池");
-			// jedisPool = new JedisPool(config, "127.0.0.1",6379, 504000,
-			// "root");
-
-			 jedisPool = new JedisPool(config, Config.REDIS_HOST,
-			 Config.REDIS_PORT, Config.REDIS_EXPIRE_TIME);
-//			jedisPool = new JedisPool(config, Config.REDIS_HOST, Config.REDIS_PORT, Config.REDIS_EXPIRE_TIME,
-//					Config.REDIS_AUTH);
-
+			jedisPool = new JedisPool(config, Config.REDIS_HOST,Config.REDIS_PORT, Config.REDIS_EXPIRE_TIME);
+			logger.info("==============>: 成功建立Redis连接");
 		}
 	}
 	
@@ -176,6 +173,15 @@ public class RedisManager {
 		try {
 			client.hset(key, field, value);
 			
+		} finally {
+			releaseResource(client);
+		}
+	}
+	
+	public static void hmset(String key,Map<String, String> map) {
+		Jedis client = jedisPool.getResource();
+		try {
+			client.hmset(key, map);
 		} finally {
 			releaseResource(client);
 		}

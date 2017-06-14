@@ -10,7 +10,7 @@ import com.qingcity.entity.Bill;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月9日 下午4:13:55
+ * @Date 2017年4月9日 下午4:13:55
  * @Description 订单Mapper接口
  */
 @Repository
@@ -21,7 +21,7 @@ public interface BillMapper {
 	 * @param orderid
 	 * @return 订单信息
 	 */
-	Bill selectByOrderId(String orderId);
+	public Bill selectByOrderId(String orderId);
 
 	/**
 	 * 根据订单号删除订单信息
@@ -29,7 +29,7 @@ public interface BillMapper {
 	 * @param orderid
 	 * @return 成功返回1 否则返回null
 	 */
-	int deleteByOrderId(String orderId);
+	public Integer deleteByOrderId(String orderId);
 
 	/**
 	 * 插入一个订单记录，
@@ -37,7 +37,7 @@ public interface BillMapper {
 	 * @param record
 	 * @return
 	 */
-	int insertBill(Bill record);
+	public Integer insertBill(Bill record);
 
 	/**
 	 * 根据订单id 更新订单信息
@@ -45,7 +45,7 @@ public interface BillMapper {
 	 * @param record
 	 * @return
 	 */
-	int updateByOrderId(Bill record);
+	public Integer updateByOrderId(Bill record);
 
 	/**
 	 * 查询某个订单的状态
@@ -53,7 +53,7 @@ public interface BillMapper {
 	 * @param orderId
 	 * @return 订单状态
 	 */
-	int selectStatusById(String orderId);
+	public Integer selectStatusById(String orderId);
 
 	/**
 	 * 根据订单号查询订单中的商品id
@@ -61,7 +61,7 @@ public interface BillMapper {
 	 * @param orderId
 	 * @return
 	 */
-	int selectPidByOrderId(String orderId);
+	public Integer selectPidByOrderId(String orderId);
 
 	/**
 	 * 根据玩家id 查询当前玩家的所有订单信息
@@ -69,8 +69,8 @@ public interface BillMapper {
 	 * @param userId
 	 * @return
 	 */
-	List<Bill> selectBillByUserId(int userId);
+	public List<Bill> selectBillByUserId(int userId);
 	
-	int updateStatusByOrderId(@Param("status")int status,@Param("orderId") String orderId);
+	public Integer updateStatusByOrderId(@Param("status")int status,@Param("orderId") String orderId);
 
 }

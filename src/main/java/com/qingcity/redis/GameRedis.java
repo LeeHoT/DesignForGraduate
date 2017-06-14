@@ -5,7 +5,7 @@ import com.qingcity.redis.common.Keys;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月1日 上午10:51:54
+ * @Date 2017年4月27日 上午10:51:54
  * @Description 保存所有正在进行pk的玩家数据，包括正在匹配和匹配成功但未完赛的玩家
  */
 public class GameRedis {

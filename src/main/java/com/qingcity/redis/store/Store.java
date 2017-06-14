@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月2日 下午4:17:48
+ * @Date 2017年4月2日 下午4:17:48
  * @Description 
  */
 public interface Store {

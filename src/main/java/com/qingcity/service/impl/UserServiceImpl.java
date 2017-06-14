@@ -16,11 +16,12 @@ import com.qingcity.service.PlayerService;
 import com.qingcity.service.UserService;
 import com.qingcity.util.BeanUtil;
 import com.qingcity.util.StringUtil;
+import com.qingcity.util.TimeUtil;
 
 /**
  * 
  * @author leehotin
- * @Date 2017年3月4日 下午12:14:07
+ * @Date 2017年4月4日 下午12:14:07
  * @Description 玩家基础信息Service
  */
 @Service("userService")
@@ -37,18 +38,27 @@ public class UserServiceImpl implements UserService {
 	public synchronized int login(String phone, String password) {
 		// 登录所用的用户名为用户的手机号，一定要主要这个问题
 		String dbPassword = selectPassByPhone(phone);
-		if (dbPassword != null && !dbPassword.trim().equals("") && dbPassword.equals(password)) {
-			System.out.println("congration" + phone + "login success");
+		if (StringUtil.isNotEmpty(dbPassword) && dbPassword.equals(password)) {
+			logger.info("==============>: 恭喜[{}]login success",phone);
 		} else {
-			System.out.println("username or password is wrong");
-			// 登陆失败
-			return -1;
+			//检测玩家是否已经注册
+			if(isExistPhone(phone)){
+				// 登陆失败
+				return -1;
+			}
+			//手机号不存在注册并登录成功
+			UserEntity user = new UserEntity();
+			user.setPasswordMd5(password);
+			user.setPhone(phone);
+			user.setRegTime(TimeUtil.getCurrentTimestamp());
+			register(user);
+			//创建角色
+			playerService.initPlayer(user.getUserId(),TimeUtil.getDate().toString());
 		}
 		return selectUidByPhone(phone);
 	}
 
 	public boolean checkHaveCreatedRole(int userId) {
-
 		// 检查是否有角色信息
 		PlayerEntity player = playerService.selectByUserId(userId);
 		if (player != null) {
@@ -60,17 +70,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int register(UserEntity user, String code) {
-		// 登录成功，，检测当前时间是开发还是公测
-		// 检查激活码是否存在
-		// 激活码可以使用
+	public int register(UserEntity user) {
 		if (isExistPhone(user.getPhone())) {
-			System.out.println("phone has been");
 			return -2;
 		}
 		// 可以注册。。先添加个人信息，后添加玩家基本信息进入玩家表player
 		insertSelective(user);
-		logger.info("玩家[{}]的基本信息填写完成,玩家id为[{}]", user.getUsername(), user.getUserId());
+		logger.info("==============>: 玩家[{}]的基本信息填写完成,玩家id为[{}]", user.getPhone(), user.getUserId());
 		return user.getUserId();
 	}
 
@@ -86,7 +92,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isExistName(String username) {
 		if (userMapper.isExistUsername(username) != null) {
-			System.out.println("name can be use");
 			return true;
 		}
 		return false;
@@ -104,18 +109,15 @@ public class UserServiceImpl implements UserService {
 	public UserEntity selectUserByPhone(String phone) {
 		String userIdStr = UserRedis.getInstance().get(phone, Keys.USER_ID);
 		UserEntity userEntity = new UserEntity();
-		if (userIdStr == null || "".equals(userIdStr)) {
+		if (StringUtil.isNull(userIdStr)) {
 			// 说明Redis没有当前用户名的数据
-			// /TODO 方法需要更改
 			userEntity = userMapper.selectUserByPhone(phone);
 			if (userEntity == null) {
 				return null;
 			}
 			saveUserRedis(userEntity);
-		} else {
-			userEntity = (UserEntity) BeanUtil.getInstance().map2Object(UserRedis.getInstance().get(userIdStr),
-					userEntity);
 		}
+		userEntity = (UserEntity) BeanUtil.getInstance().map2Object(UserRedis.getInstance().get(String.valueOf(userEntity.getUserId())),userEntity);
 		return userEntity;
 	}
 
@@ -130,6 +132,7 @@ public class UserServiceImpl implements UserService {
 		}
 		pass = user.getPasswordMd5();
 		UserRedis.getInstance().addLoginRedis(phone, pass);
+		UserRedis.getInstance().addUidPhone(phone, String.valueOf(user.getUserId()));
 		return pass;
 	}
 
@@ -144,13 +147,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void saveUserRedis(UserEntity user) {
-		Map<Object, Object> map = BeanUtil.getInstance().getFidldMap(user);
-		for (Map.Entry<Object, Object> entry : map.entrySet()) {
+		Map<String, Object> map = BeanUtil.getInstance().getFidldMap(user);
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			if (entry.getValue() != null) {
-				UserRedis.getInstance().add(user.getUserId().toString(), String.valueOf(entry.getKey()),
+				UserRedis.getInstance().add(user.getUserId().toString(), entry.getKey(),
 						String.valueOf(entry.getValue()));
 			}
 		}
+		UserRedis.getInstance().addLoginRedis(user.getPhone(), user.getPasswordMd5());
+		UserRedis.getInstance().addUidPhone(user.getPhone(), String.valueOf(user.getUserId()));
 	}
 
 	@Override

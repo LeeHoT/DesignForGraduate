@@ -7,7 +7,7 @@ import com.qingcity.redis.common.Keys;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月27日 上午11:21:57
+ * @Date 2017年4月27日 上午11:21:57
  * @Description 用户登录数据保存
  */
 public class UserRedis {
@@ -58,18 +58,16 @@ public class UserRedis {
 	}
 
 	/**
-	 * 修改用户信息
+	 * 修改或新增用户信息
 	 *
 	 * @param userID
 	 *            用户ID
 	 * @param map
 	 *            用户信息
 	 */
-	public void alter(String userID, Map<String, String> map) {
+	public void adds(String userID, Map<String, String> map) {
 		if (!map.isEmpty()) {
-			for (String key : map.keySet()) {
-				RedisManager.hset(Keys.REDIS_USER_PREFIX + userID, key, map.get(key));
-			}
+			RedisManager.hmset(Keys.REDIS_USER_PREFIX + userID, map);
 		}
 	}
 

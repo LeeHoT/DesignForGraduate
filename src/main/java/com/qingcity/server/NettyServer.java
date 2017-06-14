@@ -35,7 +35,7 @@ public class NettyServer {
 	private final int port;
 
 	public NettyServer(int port) {
-		this.logger.info("register port at: " + port);
+		this.logger.info("==============>: register port at: " + port);
 		this.port = port;
 	}
 
@@ -50,24 +50,21 @@ public class NettyServer {
 					.option(ChannelOption.TCP_NODELAY, true).option(ChannelOption.SO_KEEPALIVE, true)
 					.option(ChannelOption.SO_BACKLOG, 128);
 			ChannelFuture cf = null;
-			this.logger.info(ERequestType.parse(this.initializer.getRequestType()).getValue()
+			this.logger.info("==============>: "+ERequestType.parse(this.initializer.getRequestType()).getValue()
 					+ " server started at port " + this.port + '.');
 			if (ERequestType.HTTP.equals(ERequestType.parse(this.initializer.getRequestType()))) {
 				cf = b.bind(this.port).sync();
 			} else if (ERequestType.SOCKET.equals(ERequestType.parse(this.initializer.getRequestType()))) {
 				cf = b.bind(new InetSocketAddress(this.port)).sync();
 			} else {
-				logger.error("Can't find the requestType of " + this.initializer.getRequestType()
-						+ "!Please check config file");
+				logger.error("==============>: Can't find the requestType of " + this.initializer.getRequestType()+ "!Please check config file");
 			}
-			logger.debug("begin to check channelStatus,start the task");
-			ExecutorServiceUtil.run(new CheckChannelStatusTask(), 0, CheckChannelStatusTask.RUNNING,
-					TimeUnit.MILLISECONDS);
+			ExecutorServiceUtil.run(new CheckChannelStatusTask(), 0, CheckChannelStatusTask.RUNNING,TimeUnit.MILLISECONDS);
 			cf.channel().closeFuture().sync();
 
 		} finally {
 			// 温柔的关闭 boss worker
-			logger.debug("boss and worker 线程关闭");
+			logger.debug("==============>: boss and worker 线程关闭");
 			RedisManager.flushDB();
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();

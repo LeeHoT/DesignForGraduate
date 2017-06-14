@@ -31,7 +31,7 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 	private String requestType = ERequestType.SOCKET.getValue();
 
 	public void init() {
-		logger.info("init the HandlerDispatcher");
+		logger.info("==============>: init the HandlerDispatcher");
 		new Thread(this.handlerDispatcher).start();
 		new Thread(this.chatMessageDispatcher).start();
 	}
@@ -42,14 +42,14 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 	public void initChannel(SocketChannel ch) {
 		try {
 			if (ERequestType.SOCKET.getValue().equals(this.requestType.trim().toLowerCase())) {
-				logger.info("init the channel of type : " + this.requestType.trim().toLowerCase());
+				logger.info("==============>: init the channel of type : " + this.requestType.trim().toLowerCase());
 				ch.pipeline().addLast("protobufDecoder", new NettyMsgDecoder());
 				ch.pipeline().addLast("protobufEncoder", new NettyMsgEncoder());
 			} else if (ERequestType.HTTP.getValue().equals(this.requestType.trim().toLowerCase())) {
 				ch.pipeline().addLast("codec-http", new HttpServerCodec());
 				ch.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
 			} else {
-				logger.error("cannot inti the channel ,the type : " + this.requestType.trim()
+				logger.error("==============>: cannot inti the channel ,the type : " + this.requestType.trim()
 						+ "cannot be find,please check the request type whether it is " + ERequestType.SOCKET.getValue()
 						+ " !");
 				return;

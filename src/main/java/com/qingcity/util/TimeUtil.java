@@ -233,11 +233,14 @@ public class TimeUtil {
 		return System.currentTimeMillis() - time.getTime();
 	}
 
+	/**
+	 * "yyyyMMddHHmmss"
+	 * @return
+	 */
 	public static String getDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat(timeStrFormat);
 		String temp = sdf.format(new Date());
-		String date = temp.substring(4, 8);
-		return date;
+		return temp;
 	}
 
 	/**

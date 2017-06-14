@@ -81,6 +81,7 @@
 	</insert>
 	<!-- insert a player information optionally,this method just be used for 
 		registing,and please enture every property completely,or you can not regist 
+		-->
 	<insert id="insertSelective" parameterType="PlayerEntity"
 		useGeneratedKeys="true" keyProperty="userId">
 		insert into player
@@ -167,7 +168,7 @@
 			</if>
 		</trim>
 	</insert>
-	-->
+	
 	<!-- update player nickname -->
 	<update id="updateNickname">
 		update player set nickname =

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月1日 上午10:22:05
+ * @Date 2017年4月1日 上午10:22:05
  * @Description 用于等待PK过程中保存玩家等待的任务
  */
 public class WaitingRoomStore {

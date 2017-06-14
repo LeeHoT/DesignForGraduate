@@ -20,7 +20,7 @@ import io.netty.channel.Channel;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月6日 下午5:35:15
+ * @Date 2017年4月6日 下午5:35:15
  * @Description HandlerDispatcher 根据handlerMap 抉择处理方式， 同时可处理消息，包括添加队列、移除队列等等
  */
 @Controller
@@ -82,7 +82,7 @@ public class HandlerDispatcher implements Runnable {
 			} else {
 				messageQueue.add(request);// 添加消息进入队列
 			}
-			logger.info("添加消息进入"+request.getChannel().hashCode()+"消息队列，当前队列中有" + messageQueue.size() + "条消息!");
+			logger.info("==============>: 添加消息进入"+request.getChannel().hashCode()+"消息队列，当前队列中有" + messageQueue.size() + "条消息!");
 		} catch (Exception e) {
 			HandlerDispatcher.logger.error(ExceptionUtils.getStackTrace(e));
 		}
@@ -95,7 +95,6 @@ public class HandlerDispatcher implements Runnable {
 					if ((messageQueue != null) && (messageQueue.size() > 0) && (!messageQueue.isRunning())) {
 						MessageWorker messageWorker = new MessageWorker(messageQueue);
 						this.messageExecutor.execute(messageWorker);
-						logger.info("messageExecutir[{}]", this.messageExecutor);
 					}
 			} catch (Exception e) {
 				HandlerDispatcher.logger.error(ExceptionUtils.getStackTrace(e));
@@ -130,7 +129,7 @@ public class HandlerDispatcher implements Runnable {
 		public void run() {
 			try {
 				// 处理消息队列中的消息
-				logger.info("当前队列中还有[{}]条消息", this.messageQueue.size());
+				logger.info("==============>: 当前队列中还有[{}]条消息", this.messageQueue.size());
 				handMessageQueue();
 			} catch (Exception e) {
 				HandlerDispatcher.logger.error(ExceptionUtils.getStackTrace(e));
@@ -140,20 +139,24 @@ public class HandlerDispatcher implements Runnable {
 		}
 
 		private void handMessageQueue() {
+			Long start = System.currentTimeMillis();
 			int messageId = this.request.getCommandId();
 			GameResponse response = new GameResponse(this.request.getChannel(), this.request.getCommand(),
 					this.request.getRequestType());
 			CmdHandler handler = (CmdHandler) HandlerDispatcher.this.handlerMap.get(Integer.valueOf(messageId));
 			if (handler != null)
 				try {
-					logger.debug("本次转发的handler对象为"+handler.getClass().getName());
+					logger.info("==============>: 本次转发的handler对象为"+handler.getClass().getName());
+					logger.info("==============>: ************开始处理消息************");
 					handler.handleMsg(this.request.getMsg(), response);
 				} catch (Exception e) {
 					HandlerDispatcher.logger.error(ExceptionUtils.getStackTrace(e));
 				}
 			else {
-				HandlerDispatcher.logger.warn("指令 [{}]找不到", messageId);
+				HandlerDispatcher.logger.warn("==============>: 指令 [{}]找不到", messageId);
 			}
+			logger.info("==============>: 处理协议[{}]共消耗：[{}]ms",messageId,(System.currentTimeMillis()-start));
+			logger.info("==============>: ************消息处理结束************");
 		}
 	}
 }

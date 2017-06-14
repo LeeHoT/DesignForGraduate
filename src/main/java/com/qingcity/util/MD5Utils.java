@@ -13,12 +13,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5Utils {
 	// 小写的字符串
-	private static char[] DigitLower = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	private static char[] DigitLower = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 	// 大写的字符串
-	private static char[] DigitUpper = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	private static char[] DigitUpper = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	/**
 	 * 默认构造函数

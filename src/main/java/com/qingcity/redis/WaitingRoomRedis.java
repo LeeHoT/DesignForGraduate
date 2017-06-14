@@ -6,7 +6,7 @@ import com.qingcity.redis.common.Keys;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月27日 上午11:21:30
+ * @Date 2017年4月27日 上午11:21:30
  * @Description 等待房间
  */
 public class WaitingRoomRedis {

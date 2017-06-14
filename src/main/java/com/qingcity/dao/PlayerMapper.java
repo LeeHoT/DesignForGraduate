@@ -11,7 +11,7 @@ import com.qingcity.entity.PlayerEntity;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月4日 下午12:13:07
+ * @Date 2017年4月4日 下午12:13:07
  * @Description 玩家Mapper接口
  */
 @Repository("playerMapper")
@@ -23,7 +23,7 @@ public interface PlayerMapper {
 	 * @param userId
 	 * @return
 	 */
-	String selectNicknameById(int userId);
+	public String selectNicknameById(int userId);
 
 	/**
 	 * 获取当前玩家的头像名称
@@ -32,7 +32,7 @@ public interface PlayerMapper {
 	 *            玩家Id
 	 * @return 玩家的头像名称
 	 */
-	String getIcon(int userId);
+	public String getIcon(int userId);
 
 	/**
 	 * 玩家更换头像
@@ -42,7 +42,7 @@ public interface PlayerMapper {
 	 * @param userID
 	 *            玩家id
 	 */
-	Integer updateIcon(@Param("icon") String icon, @Param("userId") int userId);
+	public Integer updateIcon(@Param("icon") String icon, @Param("userId") int userId);
 
 	/**
 	 * 根据玩家id查询玩家信息
@@ -51,7 +51,7 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return 玩家信息
 	 */
-	PlayerEntity selectByUserId(Integer userId);
+	public PlayerEntity selectByUserId(Integer userId);
 
 	/**
 	 * 根据昵称查询玩家信息
@@ -59,7 +59,7 @@ public interface PlayerMapper {
 	 * @param nickname
 	 * @return 玩家信息
 	 */
-	PlayerEntity selectByNickname(String nickname);
+	public PlayerEntity selectByNickname(String nickname);
 
 	/**
 	 * 只查询该等级的第一个玩家 主要用于pk时使用
@@ -68,7 +68,7 @@ public interface PlayerMapper {
 	 *            要求的玩家等级
 	 * @return 返回查询到的玩家Id
 	 */
-	int selectUserByLevel(Integer level);
+	public Integer selectUserByLevel(Integer level);
 
 	/**
 	 * 根据玩家id删除玩家，一般不使用，，玩家数据在删除users表中的数据时也随之删除
@@ -77,7 +77,7 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return 更新行数 >0 则表示更新成功
 	 */
-	int deleteByUserId(Integer userId);
+	public Integer deleteByUserId(Integer userId);
 
 	/**
 	 * 添加玩家信息。。只在注册时使用 所有属性均不能为空
@@ -86,7 +86,7 @@ public interface PlayerMapper {
 	 *            玩家信息对象
 	 * @return 更新行数 >0 则表示更新成功
 	 */
-	int insertPlayer(PlayerEntity player);
+	public Integer insertPlayer(PlayerEntity player);
 
 	/**
 	 * 可选择性的添加玩家信息，可仅插入一项或多项。。一般不使用
@@ -95,7 +95,7 @@ public interface PlayerMapper {
 	 *            玩家信息对象
 	 * @return 更新行数 >0 则表示更新成功
 	 */
-	//int insertSelective(PlayerEntity player);
+	public Integer insertSelective(PlayerEntity player);
 
 	/**
 	 * 可选择性的更新玩家信息，可仅更新一项或者多项属性，例如增加体力、钻石等
@@ -104,7 +104,7 @@ public interface PlayerMapper {
 	 *            玩家信息对象
 	 * @return 更新行数 >0 则表示更新成功
 	 */
-	int updateByUserIdSelective(PlayerEntity player);
+	public Integer updateByUserIdSelective(PlayerEntity player);
 
 	/**
 	 * 更新用户体力
@@ -114,7 +114,7 @@ public interface PlayerMapper {
 	 * @param power
 	 *            新增的体力数量
 	 */
-	void updatePower(@Param("userId") int userId, @Param("lastPowUpdateTime") Timestamp lastPowUpdateTime,
+	public void updatePower(@Param("userId") int userId, @Param("lastPowUpdateTime") Timestamp lastPowUpdateTime,
 			@Param("power") int power);
 
 	/**
@@ -124,7 +124,7 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return 当前玩家当前的体力值
 	 */
-	int getPower(int userId);
+	public Integer getPower(int userId);
 
 	/**
 	 * 获取玩家体力上次刷新时间
@@ -133,7 +133,7 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return 当前玩家体力上次更新时间
 	 */
-	Timestamp getLastPowUpdateTime(int userId);
+	public Timestamp getLastPowUpdateTime(int userId);
 
 	/**
 	 * 获取用户金币数
@@ -141,14 +141,14 @@ public interface PlayerMapper {
 	 * @param playerId
 	 * @return
 	 */
-	int getGold(int userId);
+	public Integer getGold(int userId);
 
 	/**
 	 * 更新用户金币数
 	 * 
 	 * @param playerId
 	 */
-	void updateGold(@Param("userId") int userId, @Param("gold") int gold);
+	public void updateGold(@Param("userId") int userId, @Param("gold") int gold);
 
 	/**
 	 * 获取用户钻石数
@@ -156,14 +156,14 @@ public interface PlayerMapper {
 	 * @param playerId
 	 * @return
 	 */
-	int getDiamond(int userId);
+	public Integer getDiamond(int userId);
 
 	/**
 	 * 更新用户金币数
 	 * 
 	 * @param playerId
 	 */
-	void updateDiamond(@Param("userId") int userId, @Param("diamond") int diamond);
+	public void updateDiamond(@Param("userId") int userId, @Param("diamond") int diamond);
 
 	/**
 	 * 更新玩家昵称
@@ -173,7 +173,7 @@ public interface PlayerMapper {
 	 * @param nickname
 	 *            更新后的昵称
 	 */
-	void updateNickname(@Param("userId") int userId, @Param("nickname") String nickname);
+	public void updateNickname(@Param("userId") int userId, @Param("nickname") String nickname);
 
 	/**
 	 * 离开公会
@@ -181,7 +181,7 @@ public interface PlayerMapper {
 	 * @param userId
 	 *            准备离开工会的玩家id
 	 */
-	void quitSociety(int userId);
+	public void quitSociety(int userId);
 
 	/**
 	 * 加入公会
@@ -191,7 +191,7 @@ public interface PlayerMapper {
 	 * @param societyId
 	 *            公会id
 	 */
-	Integer joinSociety(@Param("userId") int userId, @Param("societyId") int societyId, @Param("job") int job);
+	public Integer joinSociety(@Param("userId") int userId, @Param("societyId") int societyId, @Param("job") int job);
 
 	/**
 	 * 更新玩家贡献值
@@ -201,7 +201,7 @@ public interface PlayerMapper {
 	 * @param contribution
 	 *            新增贡献值
 	 */
-	void updateContribution(@Param("userId") int userId, @Param("contribution") int contribution);
+	public void updateContribution(@Param("userId") int userId, @Param("contribution") int contribution);
 
 	/**
 	 * 更新玩家在公会中的职位
@@ -211,7 +211,7 @@ public interface PlayerMapper {
 	 * @param job
 	 *            1 会长，2 副会长，3 成员
 	 */
-	void updateJob(@Param("userId") int userId, @Param("job") int job);
+	public void updateJob(@Param("userId") int userId, @Param("job") int job);
 
 	/**
 	 * 查询玩家的公会信息
@@ -219,7 +219,7 @@ public interface PlayerMapper {
 	 * @param userId
 	 * @return
 	 */
-	PlayerEntity getPlayerSocietyInfo(int userId);
+	public PlayerEntity getPlayerSocietyInfo(int userId);
 
 	/**
 	 * 查询公会人数
@@ -227,7 +227,7 @@ public interface PlayerMapper {
 	 * @param societyId
 	 * @return
 	 */
-	Integer selectSocietyMemberNum(int societyId);
+	public Integer selectSocietyMemberNum(int societyId);
 
 	/**
 	 * 更新玩家个性签名
@@ -238,7 +238,7 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return
 	 */
-	int updateSignature(@Param("signature") String signature, @Param("userId") Integer userId);
+	public Integer updateSignature(@Param("signature") String signature, @Param("userId") Integer userId);
 
 	/**
 	 * 更新玩家最近一次登录时间
@@ -249,5 +249,5 @@ public interface PlayerMapper {
 	 *            玩家id
 	 * @return
 	 */
-	int updateLoginTime(@Param("lastLoginTime") Timestamp lastLoginTime, @Param("userId") Integer userId);
+	public Integer updateLoginTime(@Param("lastLoginTime") Timestamp lastLoginTime, @Param("userId") Integer userId);
 }

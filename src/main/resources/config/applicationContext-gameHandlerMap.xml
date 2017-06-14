@@ -8,24 +8,23 @@
 	<bean id="gameHandlerMap" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="111" value-ref="userHandler">
+				<entry key="10" value-ref="userHandler">
 				</entry>
-				<entry key="112" value-ref="userHandler">
+				<entry key="11" value-ref="userHandler">
 				</entry>
-				<entry key="113" value-ref="userHandler">
+				<entry key="12" value-ref="userHandler">
+				</entry>
+				<entry key="17" value-ref="userHandler">
 				</entry>
 				
-				<entry key="701" value-ref="playerHandler">
+				<entry key="13" value-ref="playerHandler">
 				</entry>
-				<entry key="702" value-ref="playerHandler">
+				<entry key="14" value-ref="playerHandler">
 				</entry>
-				<entry key="703" value-ref="playerHandler">
+				<entry key="16" value-ref="playerHandler">
 				</entry>
-				<entry key="704" value-ref="playerHandler">
-				</entry>
-				<entry key="705" value-ref="userHandler">
-				</entry>
-				<entry key="706" value-ref="shopHandler">
+				
+				<entry key="18" value-ref="shopHandler">
 				</entry>
 			</map>
 		</constructor-arg>

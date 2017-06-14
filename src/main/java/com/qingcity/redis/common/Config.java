@@ -5,7 +5,7 @@ import com.qingcity.util.ConfigUtil;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月2日 下午4:36:00
+ * @Date 2017年4月2日 下午4:36:00
  * @Description 游戏中的一些相关配置信息
  */
 public class Config {

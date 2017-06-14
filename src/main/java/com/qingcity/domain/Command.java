@@ -6,9 +6,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 
 public class Command {
 	private int id;
-	@SuppressWarnings("unused")
 	private MsgEntity messageData;
-	@SuppressWarnings("unused")
 	private ERequestType requestType;
 	FullHttpRequest request;
 
@@ -17,8 +15,6 @@ public class Command {
 		if (requestType == ERequestType.SOCKET) {
 			this.messageData = msg;
 			this.id = msg.getCmdCode();
-		} else {
-			System.out.println("Command default");
 		}
 	}
 
@@ -32,5 +28,17 @@ public class Command {
 
 	public void setRequestType(ERequestType requestType) {
 		this.requestType = requestType;
+	}
+
+	public MsgEntity getMessageData() {
+		return messageData;
+	}
+
+	public void setMessageData(MsgEntity messageData) {
+		this.messageData = messageData;
+	}
+
+	public ERequestType getRequestType() {
+		return requestType;
 	}
 }

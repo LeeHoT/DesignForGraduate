@@ -46,10 +46,9 @@ public class DailyTaskInit {
 			for (int i = 0; i < dailyTaskPoList.size(); i++) {
 				map.put(dailyTaskPoList.get(i).getID(), dailyTaskPoList.get(i).getDetail());
 			}
-			logger.info("DailyTask.json文件加载成功");
+			logger.info("==============>: DailyTask.json文件加载成功");
 		} catch (Exception e) {
-			logger.error("DailyTask.jsonjson加载失败");
-			e.printStackTrace();
+			logger.error("=============>: DailyTask.jsonjson加载失败");
 		}
 	}
 

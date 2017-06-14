@@ -6,12 +6,10 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 定义RedisStore
- *
- * User: mengmeng.cheng
- * Date: 4/4/14
- * Time: 3:09 PM
- * Email: chengmengmeng@gmail.com
+ * 
+ * @author 定义RedisStore
+ * @Date 2017年4月14日 下午1:40:16
+ * @Description 
  */
 public class MemoryStore implements Store {
 

@@ -45,21 +45,19 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Autowired
 	private PlayerMapper playerMapper;
-	@Autowired
 
 	@Override
 	public int insertSelective(PlayerEntity player) {
-		//playerMapper.insertSelective(player);
+		playerMapper.insertSelective(player);
 		savePlayerRedis(player);
 		return 1;
 	}
 
 	private void savePlayerRedis(PlayerEntity player) {
-		Map<Object, Object> map = BeanUtil.getInstance().getFidldMap(player);
-		for (Map.Entry<Object, Object> entry : map.entrySet()) {
+		Map<String, Object> map = BeanUtil.getInstance().getFidldMap(player);
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			if (entry.getValue() != null) {
-				UserRedis.getInstance().add(String.valueOf(player.getUserId()), String.valueOf(entry.getKey()),
-						String.valueOf(entry.getValue()));
+				UserRedis.getInstance().add(String.valueOf(player.getUserId()), entry.getKey(),String.valueOf(entry.getValue()));
 			}
 		}
 	}
@@ -71,7 +69,7 @@ public class PlayerServiceImpl implements PlayerService {
 		// 检查昵称的长度
 		if (nickname.length() > MAX_NICKNAME_LENTGH) {
 			// 昵称过长
-			logger.debug("昵称过长");
+			logger.debug("==============>: 昵称过长");
 			return -1;
 		}
 		// 可以更改昵称
@@ -103,7 +101,6 @@ public class PlayerServiceImpl implements PlayerService {
 		int tempLevel = player.getLevel();
 		int tmepExp = player.getExperience();
 		int remain = exp + tmepExp;
-		System.out.println("计算前的等级为" + tempLevel + ",经验值为" + tmepExp + "新增的经验值为" + exp);
 		do {
 			int upTotal = PlayerUpgradeInit.getInstance().getPlayerUpgradePo(tempLevel).getExp();
 			// 获取添加经验后剩余的经验
@@ -116,22 +113,8 @@ public class PlayerServiceImpl implements PlayerService {
 				flag = false;
 			}
 		} while (flag);
-		
-		//查看主线任务等级奖励
-//		List<MainTaskPo> list = MainTaskInit.getInstance().getMainTaskPoList();
-//		for(MainTaskPo po :list){
-//			if(po.getMid()==-1&&po.getOpen_pass()==-1&&po.getOpen_level()==tempLevel){
-//				//解锁任务
-//				TaskSchedule ts = new TaskSchedule();
-//				ts.setId(po.getID());
-//				ts.setRewardStatus(0);
-//				ts.setTime(1);
-//				taskStatusService.updateSchedule(player.getUserId(),TaskType.MAIN_TASK.getValue() , ts);
-//			}
-//		}
 		player.setLevel(tempLevel);
 		player.setExperience(remain);
-		System.out.println("计算前的等级为" + tempLevel + ",剩余的经验值为" + remain);
 		return needUpdate;
 	}
 
@@ -143,51 +126,32 @@ public class PlayerServiceImpl implements PlayerService {
 		playerEntity.setUserId(userId);
 		if (StringUtil.isNotEmpty(nickname)) {
 			// 说明Redis中存在数据
-			logger.debug("缓存中有数据");
-			synchronized (this) {
-				Map<String, String> userInfo = UserRedis.getInstance().get(String.valueOf(userId));
-				// playerEntity = (PlayerEntity)
-				// BeanUtil.getInstance().map2Object(userInfo, playerEntity);
-				playerEntity.setLevel(Integer.valueOf(userInfo.get(Keys.USER_LEVEL)));
-				playerEntity.setPower(Integer.valueOf(userInfo.get(Keys.USER_POWER)));
-				playerEntity.setLastPowUpdateTime(
-						TimeUtil.String2Timestamp(userInfo.get(Keys.USER_LAST_POWER_UPDATE_TIME)));
-				boolean needUpdate = recoverPower(playerEntity);
-				System.out.println("上次更新时间" + playerEntity.getLastPowUpdateTime());
-
-				playerEntity.setNickname(userInfo.get(Keys.USER_NICKNAME));
-				playerEntity.setGold(Integer.valueOf(userInfo.get(Keys.USER_GOLD)));
-				System.out.println("玩家金币"+playerEntity.getGold());
-				
-				playerEntity.setDiamond(Integer.valueOf(userInfo.get(Keys.USER_DIAMOND)));
-				System.out.println("玩家钻石"+playerEntity.getDiamond());
-				playerEntity.setContribution(Integer.valueOf(userInfo.get(Keys.USER_CONTRIBUTION)));
-				playerEntity.setIcon(userInfo.get(Keys.USER_AVATAR));
-				playerEntity.setExperience(Integer.valueOf(userInfo.get(Keys.USER_EXPERIENCE)));
-				playerEntity.setJob(Integer.valueOf(userInfo.get(Keys.USER_SOCIETY_JOB)));
-				playerEntity.setSocietyId(Integer.valueOf(userInfo.get(Keys.USER_SOCIETY_ID)));
-				playerEntity.setLastLoginTime(TimeUtil.String2Timestamp(userInfo.get(Keys.USER_LAST_LOGIN_TIME)));
-				playerEntity.setExperience(Integer.valueOf(userInfo.get(Keys.USER_EXPERIENCE)));
-				playerEntity.setSignature(userInfo.get(Keys.USER_SIGNATURE));
-				if (needUpdate) {
-					updateByUserIdSelective(playerEntity);
-				}
-				return playerEntity;
-			}
+			Map<String, String> userInfo = UserRedis.getInstance().get(String.valueOf(userId));
+			playerEntity.setLevel(Integer.valueOf(userInfo.get(Keys.USER_LEVEL)));
+			playerEntity.setPower(Integer.valueOf(userInfo.get(Keys.USER_POWER)));
+			playerEntity.setLastPowUpdateTime(TimeUtil.String2Timestamp(userInfo.get(Keys.USER_LAST_POWER_UPDATE_TIME)));
+			playerEntity.setNickname(userInfo.get(Keys.USER_NICKNAME));
+			playerEntity.setGold(Integer.valueOf(userInfo.get(Keys.USER_GOLD)));
+			playerEntity.setDiamond(Integer.valueOf(userInfo.get(Keys.USER_DIAMOND)));
+			playerEntity.setContribution(Integer.valueOf(userInfo.get(Keys.USER_CONTRIBUTION)));
+			playerEntity.setIcon(userInfo.get(Keys.USER_AVATAR));
+			playerEntity.setExperience(Integer.valueOf(userInfo.get(Keys.USER_EXPERIENCE)));
+			playerEntity.setJob(Integer.valueOf(userInfo.get(Keys.USER_SOCIETY_JOB)));
+			playerEntity.setSocietyId(Integer.valueOf(userInfo.get(Keys.USER_SOCIETY_ID)));
+			playerEntity.setLastLoginTime(TimeUtil.String2Timestamp(userInfo.get(Keys.USER_LAST_LOGIN_TIME)));
+			playerEntity.setExperience(Integer.valueOf(userInfo.get(Keys.USER_EXPERIENCE)));
+			playerEntity.setSignature(userInfo.get(Keys.USER_SIGNATURE));
+			return playerEntity;
 		}
-		logger.debug("缓存中没有数据");
 		// 缓存中没有，从数据库中查
 		playerEntity = playerMapper.selectByUserId(userId);
-//		if (recoverPower(playerEntity)) {
-//			updateByUserIdSelective(playerEntity);
-//		}
 		if (playerEntity != null) {
 			Map<String, String> map = new LinkedHashMap<>();
-			Map<Object, Object> objMap = BeanUtil.getInstance().getFidldMap(playerEntity);
-			for (Map.Entry<Object, Object> entry : objMap.entrySet()) {
-				map.put(String.valueOf(entry.getKey()), String.valueOf(entry.getValue()));
+			Map<String, Object> objMap = BeanUtil.getInstance().getFidldMap(playerEntity);
+			for (Map.Entry<String, Object> entry : objMap.entrySet()) {
+				map.put(entry.getKey(), String.valueOf(entry.getValue()));
 			}
-			UserRedis.getInstance().alter(String.valueOf(userId), map);
+			UserRedis.getInstance().adds(String.valueOf(userId), map);
 		}
 		return playerEntity;
 	}
@@ -212,11 +176,9 @@ public class PlayerServiceImpl implements PlayerService {
 	public boolean recoverPower(PlayerEntity player) {
 		Timestamp lastUpdateTime = player.getLastPowUpdateTime();
 		int number = (int) ((System.currentTimeMillis() - lastUpdateTime.getTime()) / POWER_MILLISECOND);
-		System.out.println("回复" + number + "点体力" + player.getPower());
 		int total = number + player.getPower();
 		int max = PlayerUpgradeInit.getInstance().getPowerLimit(player.getLevel());
 		total = total > max ? max : total;
-		System.out.println("玩家总共有体力" + total);
 		if(number == 0){
 			return false;
 		}
@@ -262,7 +224,7 @@ public class PlayerServiceImpl implements PlayerService {
 		int old_gold = getGold(userId);// 查询当前玩家的原始体力
 		if (gold + old_gold < 0) {
 			// 此时金币不足，消耗体力，且现有体力不足
-			logger.warn("玩家[{}]的金币数量不足，无法完成消费", userId);
+			logger.info("==============>: 玩家[{}]的金币数量不足，无法完成消费", userId);
 			return -1;
 		}
 		playerMapper.updateGold(userId, gold);
@@ -288,7 +250,7 @@ public class PlayerServiceImpl implements PlayerService {
 	public int updateDiamond(int diamond, int userId) {
 		int old_diamond = getDiamond(userId);
 		if (old_diamond + diamond < 0) {
-			logger.warn("玩家[{}]的钻石数量不足，无法完成消费", userId);
+			logger.info("==============>: 玩家[{}]的钻石数量不足，无法完成消费", userId);
 			return -1;
 		}
 		playerMapper.updateDiamond(userId, diamond);
@@ -316,7 +278,7 @@ public class PlayerServiceImpl implements PlayerService {
 		int result = playerMapper.updateIcon(icon, userId);
 		if (result <= 0) {
 			// 更新失败
-			logger.debug("[{}]头像更新失败" + userId);
+			logger.error("玩家[{}]的头像更新失败" + userId);
 			return -1;
 		}
 		UserRedis.getInstance().add(String.valueOf(userId), Keys.USER_AVATAR, icon);
@@ -325,14 +287,13 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public String getIcon(int userId) {
-		String avator = UserRedis.getInstance().get(String.valueOf(userId), Keys.USER_AVATAR);
-		if (avator != null && !avator.equals("")) {
-			logger.debug("缓存中取出[{}]De 头像" + userId);
-			return avator;
+		String avatar = UserRedis.getInstance().get(String.valueOf(userId), Keys.USER_AVATAR);
+		if (StringUtil.isNotNull(avatar)) {
+			return avatar;
 		}
-		avator = playerMapper.getIcon(userId);
-		UserRedis.getInstance().add(String.valueOf(userId), Keys.USER_AVATAR, avator);
-		return avator;
+		avatar = playerMapper.getIcon(userId);
+		UserRedis.getInstance().add(String.valueOf(userId), Keys.USER_AVATAR, avatar);
+		return avatar;
 	}
 
 	@Override
@@ -354,7 +315,7 @@ public class PlayerServiceImpl implements PlayerService {
 		int result = playerMapper.updateLoginTime(TimeUtil.getCurrentTimestamp(), userId);
 		if (result <= 0) {
 			// 更新失败
-			logger.debug("登录时间更新失败");
+			logger.error("==============>: 登录时间更新失败");
 			return;
 		}
 		UserRedis.getInstance().add(String.valueOf(userId), Keys.USER_LAST_LOGIN_TIME,
@@ -365,10 +326,10 @@ public class PlayerServiceImpl implements PlayerService {
 	public void updateSignature(String signature, int userId) {
 		int result = playerMapper.updateSignature(signature, userId);
 		if (result <= 0) {
-			logger.debug("个性签名更新失败");
+			logger.error("==============>: 个性签名更新失败");
 		}
 		UserRedis.getInstance().add(String.valueOf(userId), Keys.USER_SIGNATURE, signature);
-		logger.debug("个性签名缓存更新成功");
+		logger.info("==============>: 个性签名缓存更新成功");
 	}
 
 	@Override

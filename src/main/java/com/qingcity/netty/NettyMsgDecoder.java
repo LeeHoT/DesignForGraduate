@@ -56,7 +56,7 @@ public class NettyMsgDecoder extends LengthFieldBasedFrameDecoder {
 	protected Object decode(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
 		ByteBuf frame = (ByteBuf) super.decode(ctx, byteBuf);
 		if (frame == null) {
-			logger.error("The message from Client is error!Please Check and send again");
+			logger.error("=============>: The message from Client is error!Please Check and send again");
 			return null;
 		}
 		short cmd = frame.readShort();// 先读取2个字节长度命令码
@@ -66,20 +66,20 @@ public class NettyMsgDecoder extends LengthFieldBasedFrameDecoder {
 		
 		if(times.containsKey(userId)){
 			if(times.get(userId) == time){
-				logger.debug("==================玩家{[]}的请求重复，直接忽略！",userId);
+				logger.info("==============>: 玩家[{}]的请求重复，直接忽略！",userId);
 				return null;
 			}
 		}
 		times.put(userId, time);
 		
-		logger.debug("==================协议号: " + cmd);
-		logger.debug("==================消息长度: " + msgLen);
+		logger.info("==============>: 协议号:[{}]",cmd);
+		logger.info("==============>: 消息长度:[{}]",msgLen);
 		//System.out.println("消息类型: " + protoType);
-		logger.debug("==================消息体的实际接收长度: " + frame.readableBytes());
+		logger.info("==============>: 消息体的实际接收长度: [{}]",frame.readableBytes());
 		byte[] data = new byte[frame.readableBytes()];// 其它数据为实际数据
 		frame.readBytes(data);
 		if (msgLen != data.length) {
-			logger.debug("==================消息实际长度和原始长度不一致。。请重新发送");
+			logger.info("==============>: 消息实际长度和原始长度不一致。。请重新发送");
 			return null;
 		}
 		MsgEntity msgVO = new MsgEntity();

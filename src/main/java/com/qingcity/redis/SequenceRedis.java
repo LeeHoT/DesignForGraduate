@@ -2,12 +2,6 @@ package com.qingcity.redis;
 
 import com.qingcity.redis.common.Keys;
 
-/**
- * User: mengmeng.cheng
- * Date: 4/13/14
- * Time: 4:09 PM
- * Email: chengmengmeng@gmail.com
- */
 public class SequenceRedis {
     private static final SequenceRedis instance = new SequenceRedis();
 

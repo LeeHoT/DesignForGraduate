@@ -7,12 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.qingcity.redis.common.Config;
-import com.qingcity.util.RandomUtil;
 
 /**
  * 
  * @author leehotin
- * @Date 2017年2月27日 下午4:52:17
+ * @Date 2017年4月27日 下午4:52:17
  * @Description 排名数据缓存
  */
 public class RankRedis {

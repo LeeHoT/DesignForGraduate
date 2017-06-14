@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月6日 下午5:31:07
+ * @Date 2017年4月6日 下午5:31:07
  * @Description 聊天消息请求整理
  */
 public class ChatMessageReq {

@@ -11,7 +11,7 @@ import io.netty.channel.Channel;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月5日 上午10:34:46
+ * @Date 2017年4月5日 上午10:34:46
  * @Description 玩家客户端与服务器通信记录管理器
  */
 public class PlayerManager {
@@ -40,13 +40,13 @@ public class PlayerManager {
 	}
 
 	public void add(Channel channel) {
-		logger.debug("保存玩家[{}]上次通信时间" + channel);
+		logger.debug("=============>: 保存channel [{}]上次通信时间",channel.hashCode());
 		lastPingTime.put(channel, System.currentTimeMillis());
 	}
 
 	public void remove(Channel channel) {
 		if (!isExist(channel)) {
-			logger.warn("channel [{}] don't exist,please check again!", channel);
+			logger.debug("=============>: channel [{}] don't exist,please check again!", channel.hashCode());
 			return;
 		}
 		lastPingTime.remove(channel);
@@ -54,7 +54,7 @@ public class PlayerManager {
 
 	public void updateTime(Channel channel) {
 		if (!isExist(channel)) {
-			logger.warn("channel [{}] don't exist,please check again!", channel);
+			logger.debug("=============>: channel [{}] don't exist,please check again!", channel.hashCode());
 			return;
 		}
 		((HashMap<Channel, Long>) lastPingTime).replace(channel, System.currentTimeMillis());

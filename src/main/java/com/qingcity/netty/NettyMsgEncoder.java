@@ -1,8 +1,5 @@
 package com.qingcity.netty;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.qingcity.entity.MsgEntity;
 
 import io.netty.buffer.ByteBuf;
@@ -14,7 +11,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public class NettyMsgEncoder extends MessageToByteEncoder<MsgEntity> {
 
-	private static Logger logger = LoggerFactory.getLogger(NettyMsgEncoder.class);
 	@Override
 	protected void encode(ChannelHandlerContext ctx, MsgEntity msg, ByteBuf byteBuf) throws Exception {
 		int dataLength = msg.getData() == null ? 0 : msg.getData().length;
@@ -31,9 +27,6 @@ public class NettyMsgEncoder extends MessageToByteEncoder<MsgEntity> {
 		byteBuf.writeLong(System.currentTimeMillis());
 		// 写入消息长度 占用4字节
 		byteBuf.writeInt(dataLength);
-		logger.debug("------------发送消息的协议号为:{[]}", msg.getCmdCode());
-		logger.debug("------------发送消息的时间为:{[]}", System.currentTimeMillis());
-		logger.debug("------------发送的消息体长度为:{[]}", dataLength);
 		if (dataLength > 0) {
 			// 写入消息体，长度为dataLength
 			byteBuf.writeBytes(msg.getData());

@@ -18,7 +18,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 /**
  * 
  * @author leehotin
- * @Date 2017年2月5日 下午1:22:01
+ * @Date 2017年4月5日 下午1:22:01
  * @Description 世界频道
  */
 public class WorldGroup implements Groups {
@@ -37,7 +37,7 @@ public class WorldGroup implements Groups {
 	public int addToGroup(int identify, Channel channel) {
 		ChannelGroup channels = getChannels(identify);// 取出指定频道内的玩家channel列表
 		if (channels == null) {
-			logger.debug("世界频道[{}]不存在" + identify);
+			logger.info("==============>: 世界频道[{}]不存在",identify);
 			worldChannels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 			worldChannels.add(channel);
 			worldChannel.put(identify, worldChannels);
@@ -53,7 +53,7 @@ public class WorldGroup implements Groups {
 		int worldId = getIdByChannel(channel);
 		ChannelGroup channels = getChannels(worldId);
 		if (!channels.contains(channel)) {
-			logger.error("世界频道[{}]中不存在Channel[{}]", worldId, channel);
+			logger.error("=============>: 世界频道[{}]中不存在Channel[{}]", worldId, channel);
 			return -1;
 		}
 		channels.remove(channel);
@@ -83,14 +83,13 @@ public class WorldGroup implements Groups {
 
 	@Override
 	public int changeChannel(int old_identify, int new_identify, Channel channel) {
-		System.out.println("暂不支持切换世界频道");
+		//暂不支持切换世界频道
 		return -1;
 	}
 
 	@Override
 	public ChannelGroup getChannels(int identify) {
 		if (!worldChannel.containsKey(identify)) {
-			logger.error("不存在世界频道[{}]", identify);
 			return null;
 		}
 		return worldChannel.get(identify);

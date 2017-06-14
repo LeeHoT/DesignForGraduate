@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * 
  * 对应users表
  * 
- * @author leehot(李慧婷)
+ * @author leehotin(李慧婷)
  *
  */
 @Repository(value = "userEntity")
@@ -27,7 +27,7 @@ public class UserEntity implements Serializable {
 	private Timestamp regTime; // 注册时间
 	private String idCard;// 身份证号
 
-	private boolean isCharged;
+	private Boolean isCharged;
 
 	public String getIdCard() {
 		return idCard;
@@ -61,8 +61,6 @@ public class UserEntity implements Serializable {
 		this.username = username;
 	}
 
-	
-
 	public String getPasswordMd5() {
 		return passwordMd5;
 	}
@@ -87,12 +85,11 @@ public class UserEntity implements Serializable {
 		this.email = email;
 	}
 
-	public boolean isCharged() {
+	public Boolean getIsCharged() {
 		return isCharged;
 	}
 
-	public void setCharged(boolean isCharged) {
+	public void setIsCharged(Boolean isCharged) {
 		this.isCharged = isCharged;
 	}
-
 }

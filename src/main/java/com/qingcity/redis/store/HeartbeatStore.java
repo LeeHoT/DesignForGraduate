@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 
  * @author leehotin
- * @Date 2017年3月2日 下午4:19:42
+ * @Date 2017年4月2日 下午4:19:42
  * @Description TODO
  */
 public class HeartbeatStore {

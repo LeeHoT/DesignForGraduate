@@ -61,10 +61,9 @@ public class ShopInit {
 				} else {
 					logger.error("未知的商店类型[{}]", type);
 				}
-				logger.info(type.getPo() + ".json文件加载成功");
+				logger.info("==============>: "+type.getPo() + ".json文件加载成功");
 			} catch (Exception e) {
-				logger.error(type.getPo() + ".jsonjson加载失败");
-				e.printStackTrace();
+				logger.error("=============>: "+type.getPo() + ".jsonjson加载失败");
 			}
 		}
 	}
