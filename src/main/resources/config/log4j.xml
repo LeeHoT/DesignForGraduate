@@ -25,16 +25,17 @@
 		</filter>
 	</appender>
 	<appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="/home/qingcity/QingCity/logs/log.log" />
+		<param name="File" value="/home/qingcity/QingCity/logs/log" />
 		<param name="Threshold" value="INFO" />
-		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>
+		<param name="DatePattern" value="'_'yyyy-MM-dd'.log'"></param>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
 	</appender>
-	<appender name="error.file" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="/home/qingcity/QingCity/logs/error.log" />
+	<appender name="ERROR.FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/home/qingcity/QingCity/logs/error" />
 		<param name="Threshold" value="WARN" />
+		<param name="DatePattern" value="'_'yyyy-MM-dd'.log'"></param>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d][%p] %m%n" />
 		</layout>
@@ -59,6 +60,6 @@
 		<appender-ref ref="CONSOLE.ERR" />
 		<appender-ref ref="CONSOLE.OUT" />
 		<appender-ref ref="FILE" />
-		<appender-ref ref="error.file" />
+		<appender-ref ref="ERROR.FILE" />
 	</root>
 </log4j:configuration>

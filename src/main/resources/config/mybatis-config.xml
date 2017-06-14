@@ -5,13 +5,11 @@
     <typeAliases>
         <typeAlias alias="PlayerEntity" type="com.qingcity.entity.PlayerEntity" />
         <typeAlias alias="UserEntity" type="com.qingcity.entity.UserEntity" />
-        <typeAlias alias="Bill" type="com.qingcity.entity.Bill" />
     </typeAliases>
     
 	<mappers>
 		<!-- base package -->
 		<mapper resource="com/qingcity/dao/mapper/PlayerMapper.xml" />
 		<mapper resource="com/qingcity/dao/mapper/UserMapper.xml" />
-		<mapper resource="com/qingcity/dao/mapper/BillMapper.xml" />
 	</mappers>
 </configuration>  

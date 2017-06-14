@@ -6,19 +6,19 @@ package com.qingcity.constants;
 public interface CmdConstant {
 
 	short   
-	        /** 登录验证*/
+	        /** 登录验证(不可直接转发)*/
 			C2S_USER_LOGIN = 10,
-			/** 注册验证*/
+			/** 注册验证(不可直接转发)*/
 			C2S_USER_REGISTER = 11,
-			/** 创建角色*/
+			/** 创建角色(不可直接转发)*/
 			C2S_USER_CREATE_ROLE = 12,
 			/** 玩家基本消息*/
 			C2S_USER_GET_BASE_INFO = 13,
-			/** 更新签名*/
+			/** 更新签名(不可直接转发)*/
 			C2S_USER_UPDATE_RIGNATURE = 14,
 			/** (弃用)更新财富，，包括金币，钻石，体力、经验等*/
 			//C2S_USER_UPDATE_WEALTH = 15,
-			/** 更新头像*/
+			/** 更新头像(不可直接转发)*/
 			C2S_USER_UPDATE_AVATOR = 16,
 			/** 获取首页信息*/
 			C2S_USER_GET_INDEX = 17,
