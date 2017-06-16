@@ -3,7 +3,7 @@ package com.qingcity.init.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qingcity.util.RandomUtil;
+import com.qingcity.base.util.RandomUtil;
 
 public enum DyeColorType {
 	/**红*/

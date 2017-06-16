@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.qingcity.base.util.TimeUtil;
 import com.qingcity.entity.PlayerEntity;
 import com.qingcity.init.entity.DyeColorType;
 import com.qingcity.init.entity.ItemType;
@@ -21,7 +22,6 @@ import com.qingcity.init.manager.ShopInit;
 import com.qingcity.redis.RedisManager;
 import com.qingcity.service.PlayerService;
 import com.qingcity.service.ShopService;
-import com.qingcity.util.TimeUtil;
 
 @Service
 public class ShopServiceImpl implements ShopService {

@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.qingcity.domain.ERequestType;
+import com.qingcity.base.task.CheckChannelStatusTask;
+import com.qingcity.base.util.ExecutorServiceUtil;
+import com.qingcity.base.domain.ERequestType;
 import com.qingcity.netty.ServerInitializer;
 import com.qingcity.redis.RedisManager;
-import com.qingcity.task.CheckChannelStatusTask;
-import com.qingcity.util.ExecutorServiceUtil;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

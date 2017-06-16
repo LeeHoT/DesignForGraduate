@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.qingcity.constants.CmdConstant;
+import com.qingcity.base.constants.CmdConstant;
 import com.qingcity.entity.MsgEntity;
 import com.qingcity.proto.PlayerInfo.S2C_Result;
 
@@ -45,7 +45,7 @@ public class PlayerChannelManager {
 	 *            玩家Channel
 	 */
 	public synchronized void add(int userId, Channel channel) {
-		logger.info("==============>: Add channel:[{}] into channelMap,玩家[{}]已登录", userId, userId);
+		logger.info("==============>: Add channel:[{}] into channelMap,玩家[{}]已登录,当前共有[{}]个玩家在线", channel.hashCode(), userId,channelMap.size());
 		if(channelMap.containsKey(userId)){
 			//玩家已登录，踢掉之前的玩家并通知
 			S2C_Result.Builder s2c_result = S2C_Result.newBuilder();
@@ -95,9 +95,8 @@ public class PlayerChannelManager {
 	public void removeChannel(Channel channel) {
 		for (Map.Entry entry : channelMap.entrySet()) {
 			if (entry.getValue() == channel) {
-				logger.info("==============>: Remove channel:[{}] from channelMap!,玩家[{}]掉线", channel, entry.getKey());
+				logger.info("==============>: Remove channel:[{}] from channelMap!,玩家[{}]掉线,当前还有[{}]个玩家在线", channel, entry.getKey(), channelMap.size());
 				channelMap.remove(entry.getKey());
-				logger.info("==============>: 当前还有[{}]个玩家在线", channelMap.size());
 			}
 		}
 	}

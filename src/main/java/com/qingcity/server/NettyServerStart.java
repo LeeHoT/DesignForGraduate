@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.qingcity.constants.PortConstant;
+import com.qingcity.base.constants.PortConstant;
 import com.qingcity.netty.ServerInitializer;
 
 /**
  * NettyServer 启动程序，加载log4j和spring 配置文件,设定服务器端口,初始化Initializer
  * 
- * @author 李慧婷
+ * @author leehotin
  *
  */
 public class NettyServerStart {

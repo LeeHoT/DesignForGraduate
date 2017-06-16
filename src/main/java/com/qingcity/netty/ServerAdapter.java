@@ -7,17 +7,17 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.qingcity.base.task.CheckChannelStatusTask;
 import com.qingcity.chat.domain.ChatMessageReq;
-import com.qingcity.constants.ChatConstant;
-import com.qingcity.constants.CmdConstant;
+import com.qingcity.base.constants.ChatConstant;
+import com.qingcity.base.constants.CmdConstant;
 import com.qingcity.data.manager.PlayerChannelManager;
-import com.qingcity.dispatcher.ChatMessageDispatcher;
-import com.qingcity.dispatcher.HandlerDispatcher;
-import com.qingcity.domain.ERequestType;
-import com.qingcity.domain.GameRequest;
+import com.qingcity.base.dispatcher.ChatMessageDispatcher;
+import com.qingcity.base.dispatcher.HandlerDispatcher;
+import com.qingcity.base.domain.ERequestType;
+import com.qingcity.base.domain.GameRequest;
 import com.qingcity.entity.MsgEntity;
 import com.qingcity.proto.PlayerInfo.S2C_Result;
-import com.qingcity.task.CheckChannelStatusTask;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

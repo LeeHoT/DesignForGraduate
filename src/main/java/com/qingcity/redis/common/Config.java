@@ -1,6 +1,6 @@
 package com.qingcity.redis.common;
 
-import com.qingcity.util.ConfigUtil;
+import com.qingcity.base.util.ConfigUtil;
 
 /**
  * 

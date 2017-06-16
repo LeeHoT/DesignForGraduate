@@ -5,16 +5,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.qingcity.base.util.ExceptionUtils;
+import com.qingcity.base.util.StringUtil;
 import com.qingcity.chat.domain.ChatMessageReq;
-import com.qingcity.constants.ChatConstant;
+import com.qingcity.base.constants.ChatConstant;
 import com.qingcity.data.manager.WorldGroup;
 import com.qingcity.entity.MsgEntity;
 import com.qingcity.entity.PlayerEntity;
 import com.qingcity.proto.Chat.C2S_Chat;
 import com.qingcity.proto.Chat.S2C_Chat;
 import com.qingcity.service.PlayerService;
-import com.qingcity.util.ExceptionUtils;
-import com.qingcity.util.StringUtil;
 
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
@@ -69,14 +69,18 @@ public class WorldMessageHandler implements ChatMessageHandler {
 			worldRes.setMsgLength(chatMsg.length);
 			worldRes.setCmdCode((short) ChatConstant.WORLD_MSG);
 			worldRes.setData(chatMsg);
+			
+			int sendNum = 0;
 			for(Channel channel :channels){
 				if(channel == msgReq.getChannel()){
 					continue;
 				}
 				channel.writeAndFlush(worldRes);
+				sendNum++;
 			}
+			logger.info("=============>: 聊天频道[{}]共有[{}]位玩家在线,成功转发消息给[{}]个玩家",ChatConstant.WORLD_MSG,channels.size(),sendNum);
 		} catch (Exception e) {
-			logger.error("==============>: 在转发世界消息的时候发生了异常：" + ExceptionUtils.getStackTrace(e));
+			logger.error("=============>: 在转发世界消息的时候发生了异常：" + ExceptionUtils.getStackTrace(e));
 		}
 
 	}

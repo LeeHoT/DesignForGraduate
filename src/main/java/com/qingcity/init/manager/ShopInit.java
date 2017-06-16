@@ -9,12 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.reflect.TypeToken;
+import com.qingcity.base.util.FileUtil;
+import com.qingcity.base.util.GsonUtil;
 import com.qingcity.init.entity.ShopGiftPo;
 import com.qingcity.init.entity.ShopGroceryPo;
 import com.qingcity.init.entity.ShopRechargePo;
 import com.qingcity.init.entity.ShopType;
-import com.qingcity.util.FileUtil;
-import com.qingcity.util.GsonUtil;
 
 public class ShopInit {
 

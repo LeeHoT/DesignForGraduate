@@ -54,6 +54,9 @@ public class NettyMsgDecoder extends LengthFieldBasedFrameDecoder {
 	 */
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
+		if(byteBuf.readableBytes() == 0){
+			return null;
+		}
 		ByteBuf frame = (ByteBuf) super.decode(ctx, byteBuf);
 		if (frame == null) {
 			logger.error("=============>: The message from Client is error!Please Check and send again");

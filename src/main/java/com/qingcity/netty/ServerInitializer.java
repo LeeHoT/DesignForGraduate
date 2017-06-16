@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.qingcity.dispatcher.ChatMessageDispatcher;
-import com.qingcity.dispatcher.HandlerDispatcher;
-import com.qingcity.domain.ERequestType;
-import com.qingcity.util.ExceptionUtils;
+import com.qingcity.base.util.ExceptionUtils;
+import com.qingcity.base.dispatcher.ChatMessageDispatcher;
+import com.qingcity.base.dispatcher.HandlerDispatcher;
+import com.qingcity.base.domain.ERequestType;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
