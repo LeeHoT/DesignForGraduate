@@ -11,10 +11,10 @@
 
 
    <!-- 加载固定配置文件 -->
-	<bean id="badWordInit" class="com.qingcity.init.manager.BadWordInit" init-method="init"></bean>
-	<bean id="shopInit" class="com.qingcity.init.manager.ShopInit" init-method="init"></bean>
-	<bean id="playerUpgradeInit" class="com.qingcity.init.manager.PlayerUpgradeInit" init-method="init"></bean>
-	<bean id="dailyTaskInit" class="com.qingcity.init.manager.DailyTaskInit" init-method="init"></bean>
-	<bean id="mainTaskInit" class="com.qingcity.init.manager.MainTaskInit" init-method="init"></bean>
+	<bean id="badWordInit" class="com.qingcity.sd.manager.BadWordInit" init-method="init"></bean>
+	<bean id="shopInit" class="com.qingcity.sd.manager.ShopInit" init-method="init"></bean>
+	<bean id="playerUpgradeInit" class="com.qingcity.sd.manager.PlayerUpgradeInit" init-method="init"></bean>
+	<bean id="dailyTaskInit" class="com.qingcity.sd.manager.DailyTaskInit" init-method="init"></bean>
+	<bean id="mainTaskInit" class="com.qingcity.sd.manager.MainTaskInit" init-method="init"></bean>
 
 </beans>

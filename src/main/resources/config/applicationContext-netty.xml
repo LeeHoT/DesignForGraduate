@@ -15,7 +15,7 @@
 	<context:property-placeholder location="classpath:config/properties/settings.properties" ignore-unresolvable="true" />
 
 	<!-- 初始化Initializer -->
-	<bean id="serverInitializer" class="com.qingcity.netty.ServerInitializer"
+	<bean id="serverInitializer" class="com.qingcity.server.base.ServerInitializer"
 		init-method="init">
 		<property name="handlerDispatcher" ref="handlerDispatcher" />
 		<property name="chatMessageDispatcher" ref="chatMessageDispatcher" />
